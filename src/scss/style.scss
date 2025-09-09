@@ -1,0 +1,19 @@
+// 引入 Bootstrap
+@use "bootstrap/scss/bootstrap" as *;
+// 'as *' 表示将其中的所有内容作为全局变量/混入使用，类似于 @import 的效果。
+
+// 覆盖 Bootstrap 变量
+$primary: #8e44ad;
+$font-family-sans-serif: "Ma Shan Zheng", "STKaiti", "KaiTi", serif;
+
+// 自定义样式
+.app-container {
+  min-height: 100vh;
+  
+  background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+}
+
+
+// 响应式调整
+
+// 媒体查询
