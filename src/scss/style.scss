@@ -13,6 +13,29 @@ $font-family-sans-serif: "Ma Shan Zheng", "STKaiti", "KaiTi", serif;
   background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
 }
 
+// 隐藏光标
+* {
+  caret-color: transparent; /* 光标透明 */
+}
+
+// 隐藏滚动条（保留滚动功能）
+.no-scrollbar {
+  // 1. 基础设置：垂直滚动条按需显示，水平滚动条隐藏（避免内容溢出）
+  overflow-y: auto; /* 内容超限时显示垂直滚动（但视觉上隐藏） */
+  overflow-x: hidden; /* 禁止水平滚动，防止内容横向溢出 */
+
+  // 2. Chrome/Safari/Edge 等 WebKit 内核浏览器
+  &::-webkit-scrollbar {
+    display: none; /* 完全隐藏滚动条 */
+  }
+
+  // 3. Firefox 浏览器
+  scrollbar-width: none; /* 隐藏滚动条（火狐专属属性） */
+
+  // 4. IE/Edge 旧版本（可选，如需兼容）
+  -ms-overflow-style: none;
+}
+
 
 // 响应式调整
 
