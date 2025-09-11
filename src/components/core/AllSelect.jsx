@@ -3,41 +3,49 @@ import PoemInput from "./PoemInput";
 import StyleSelector from "./StyleSelector";
 import ImageRatio from "./ImageRatio";
 import GenerateButton from "./GenerateButton";
+import "@/scss/AllSelect.scss";
 
 const AllSelect = () => {
+  const [activeTab, setActiveTab] = React.useState("poem");
 
   return (
-    <div className="my-5 p-2 rounded container d-flex flex-column items-center" style={{border: "1px solid #ccc"}}>
+    <div className="my-5 p-2 rounded container d-flex flex-column items-center" style={{ border: "1px solid #ccc", overflow: "hidden" }}>
 
-      <div className="tab-content" id="settingsTabsContent">
-        <div className="tab-pane fade show active" id="poem" role="tabpanel">
-          <PoemInput />
-        </div>
-
-        <div className="tab-pane fade" id="style" role="tabpanel">
-          <StyleSelector />
-        </div>
-
-        <div className="tab-pane fade" id="ratio" role="tabpanel">
-          <ImageRatio />
+      <div className="choice-content-wrapper">
+        <div className="choice-content-item">
+          <PoemInput isActive={activeTab === "poem"} />
         </div>
       </div>
+
 
       {/* 选项卡导航 */}
-      <div class="d-flex justify-content-between align-items-center border-top">
-        <ul className="nav nav-tabs" id="settingsTabs" role="tablist">
-          <li className="nav-item" role="presentation">
-            <button className="nav-link" id="poem-tab" data-bs-toggle="tab" data-bs-target="#poem" type="button" role="tab">→</button>
+      <div class="d-flex justify-content-between align-items-center">
+        <ul className="choice-nav">
+          <li className="choice-nav-item" >
+            <button className={"choice-nav-link" + (activeTab === "poem" ? " active" : "")} onClick={() => setActiveTab("poem")}> › </button>
           </li>
-          <li className="nav-item" role="presentation">
-            <button className="nav-link" id="style-tab" data-bs-toggle="tab" data-bs-target="#style" type="button" role="tab">艺术风格</button>
+          <li className="choice-nav-item" >
+            <button className={"choice-nav-link" + (activeTab === "style" ? " active" : "")} onClick={() => setActiveTab("style")}>艺术风格</button>
           </li>
-          <li className="nav-item" role="presentation">
-            <button className="nav-link" id="ratio-tab" data-bs-toggle="tab" data-bs-target="#ratio" type="button" role="tab">图片比例</button>
+          <li className="choice-nav-item" >
+            <button className={"choice-nav-link" + (activeTab === "ratio" ? " active" : "")} onClick={() => setActiveTab("ratio")}>图片比例</button>
           </li>
         </ul>
-          <GenerateButton />
+        <GenerateButton />
       </div>
+
+      <div className="choice-content-wrapper">
+        <div className="choice-content">
+          <div className="choice-content-item">
+            <StyleSelector isActive={activeTab === "style"} />
+          </div>
+
+          <div className="choice-content-item">
+            <ImageRatio isActive={activeTab === "ratio"} />
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }

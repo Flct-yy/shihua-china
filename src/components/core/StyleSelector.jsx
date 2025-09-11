@@ -5,7 +5,7 @@ const StyleSelector = () => {
 
   return (
     <div className="row">
-      <div className="col-md-4 mb-4">
+      <div className="col-md-4">
         <div className="card style-card style-card-active">
           {/* <img src="#" className="card-img-top" alt="水墨风格" /> */}
           <div className="card-body">
@@ -14,7 +14,7 @@ const StyleSelector = () => {
           </div>
         </div>
       </div>
-      <div className="col-md-4 mb-4">
+      <div className="col-md-4">
         <div className="card style-card">
           <div className="card-body">
             <h5 className="card-title">工笔风格</h5>
@@ -22,7 +22,7 @@ const StyleSelector = () => {
           </div>
         </div>
       </div>
-      <div className="col-md-4 mb-4">
+      <div className="col-md-4">
         <div className="card style-card">
           <div className="card-body">
             <h5 className="card-title">写意风格</h5>

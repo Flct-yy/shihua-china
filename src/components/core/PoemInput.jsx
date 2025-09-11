@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import '@/scss/PoemInput.scss';
 
-const PoemInput = () => {
+const PoemInput = (props) => {
   const [poem, setPoem] = React.useState("");
   const textareaRef = useRef(null); // 用于textarea元素的引用
   const maxRows = 8;
@@ -70,11 +70,13 @@ const PoemInput = () => {
     }
   }
 
+  const { isActive } = props;
+
   return (
     <div className="tab-pane fade show active" id="poem" role="tabpanel">
       <div className="row">
         <div className="col-12">
-          <textarea className="input-textarea w-100 poem-input no-scrollbar px-2" placeholder="请输入一句古诗词. . ." ref={textareaRef} value={poem} onChange={TextareaChange}></textarea>
+          <textarea className={"input-textarea w-100 poem-input no-scrollbar px-2 " + (isActive ? "active" : "")} placeholder="请输入一句古诗词. . ." ref={textareaRef} value={poem} onChange={TextareaChange}></textarea>
         </div>
       </div>
     </div>

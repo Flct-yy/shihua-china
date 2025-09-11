@@ -1,0 +1,54 @@
+.choice-nav {
+  display: flex;
+  margin: auto 0;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+
+
+
+  .choice-nav-item {
+
+    text-decoration: none;
+    //去掉li的默认样式
+    list-style: none;
+    margin-right: 20px;
+    font-size: 16px;
+    font-weight: bold;
+
+
+    .choice-nav-link {
+      border: 1px solid #000;
+      background-color: transparent;
+      color: #333;
+      padding: 5px 15px;
+
+
+      &.active {
+        background-color: pink;
+      }
+    }
+
+
+  }
+}
+
+.choice-content-item {
+
+  // transform: rotatey(-90deg);
+}
+
+.poem-active {
+  transform: rotatey(0deg);
+}
+
+.choice-content {
+
+  .choice-content-item {
+    transition: rotatey 0.5s ease-in-out;
+  }
+
+  .active {
+    transform: rotatey(0deg);
+  }
+}

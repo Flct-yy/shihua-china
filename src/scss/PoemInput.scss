@@ -2,10 +2,15 @@
   resize: none;
   border: none;
   background-color: pink;
-  caret-color:auto;
+  caret-color: auto;
   height: 6rem;
   line-height: 2rem;
+
   &:focus {
     outline: none;
+  }
+
+  &.active {
+
   }
 }
