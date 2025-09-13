@@ -1,14 +1,37 @@
 .ratio-option {
 
+  .text {
+    padding: 0.375rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    color: #1890ff;
 
-  .text{
     &:hover {
-      font-weight: bold;
+      font-weight: 600;
     }
   }
 
   .ratio-option-active {
 
-    font-weight: bold;
+    font-weight: 600;
+
   }
+}
+
+
+.image-ratio {
+  transition: "height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+
+}
+
+.active {
+  display: block;
+  height: auto;
+}
+
+.not-active {
+  display: none;
+  height: 0rem;
 }

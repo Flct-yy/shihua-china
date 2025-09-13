@@ -76,7 +76,7 @@ const PoemInput = (props) => {
     <div className="tab-pane fade show active" id="poem" role="tabpanel">
       <div className="row">
         <div className="col-12">
-          <textarea className={"input-textarea w-100 poem-input no-scrollbar px-2 " + (isActive ? "active" : "")} placeholder="请输入一句古诗词. . ." ref={textareaRef} value={poem} onChange={TextareaChange}></textarea>
+          <textarea className={"input-textarea w-100 poem-input no-scrollbar px-2 " + (isActive ? "active" : "not-active")} placeholder="请输入一句古诗词. . ." ref={textareaRef} value={poem} onChange={TextareaChange}></textarea>
         </div>
       </div>
     </div>

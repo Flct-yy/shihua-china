@@ -10,15 +10,12 @@ const Home = () => {
   return (
     <div className="home px-5 py-2">
       <Header />
-      
+
       <main className="container">
         <h1 className="display-3 my-5 text-center">诗词成画，意境自现</h1>
 
-        <PoemInput />
-        <StyleSelector />
-        <ImageRatio />
         <AllSelect />
-        
+
       </main>
 
       <Footer />

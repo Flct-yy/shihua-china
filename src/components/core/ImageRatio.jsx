@@ -1,10 +1,11 @@
 import React from 'react';
 import '@/scss/ImageRatio.scss'
 
-const ImageRatio = () => {
+const ImageRatio = (props) => {
+  const { isActive } = props;
 
   return (
-    <div className="row">
+    <div className={"row image-ratio " + (isActive? "active" : "not-active")}>
       <div className="col-sm-6 col-md-3">
         <div className="ratio-option">
           {/* <div className="ratio-preview" style="aspect-ratio: 1/1;"></div> */}

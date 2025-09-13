@@ -1,10 +1,11 @@
 import React from "react";
 import "@/scss/StyleSelector.scss"
 
-const StyleSelector = () => {
+const StyleSelector = (props) => {
+  const { isActive } = props;
 
   return (
-    <div className="row">
+    <div className={"row style-selector " + (isActive? "active" : "not-active")}>
       <div className="col-md-4">
         <div className="card style-card style-card-active">
           {/* <img src="#" className="card-img-top" alt="水墨风格" /> */}
