@@ -35,6 +35,40 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
     }
+
+    &:first-child {
+      .choice-nav-link {
+        border: none;
+        font-size: 2rem;
+        padding: 0rem;
+        border-radius: 0;
+
+
+
+        span {
+          display: inline-block; // 关键：inline元素无法旋转，需改为inline-block
+          transform: rotate(90deg);
+          transition: transform 0.3s ease; // 平滑过渡旋转效果
+        }
+
+        &:hover:not(.active) {
+          background-color: transparent;
+          border-color: transparent;
+        }
+
+        &.active {
+          background-color: transparent;
+          color: black;
+          border-color: #ffb6c1;
+          box-shadow: none;
+
+          span {
+            transform: rotate(0deg);
+
+          }
+        }
+      }
+    }
   }
 }
 

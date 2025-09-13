@@ -37,7 +37,7 @@ const AllSelect = () => {
                 className={`choice-nav-link ${activeTab === "poem" ? " active" : ""}`} 
                 onClick={() => handleTabChange("poem")}
               >
-                › 
+                <span> › </span>
               </button>
             </li>
             <li className="choice-nav-item">
