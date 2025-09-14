@@ -28,6 +28,7 @@ If you are developing a production application, we recommend using TypeScript wi
 - **Axios 1.11.0** - HTTP 客户端
 - **Bootstrap 5.3.8** - CSS 框架
 - **React Icons 5.5.0** - 图标库
+- **react-redux** - 状态管理库
 
 ## 项目配置
 - 支持 ES 模块 (`"type": "module"`)
