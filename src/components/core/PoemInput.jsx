@@ -1,11 +1,18 @@
 import React, { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setPoem } from "@/store/features/inputSlice";
 import '@/scss/PoemInput.scss';
 
 const PoemInput = (props) => {
-  const [poem, setPoem] = React.useState("");
+  // Redux 状态获取
+  const { poem } = useSelector(state => state.input);
+  const dispatch = useDispatch();
+
+  // 文本域 ref + 行数限制
   const textareaRef = useRef(null); // 用于textarea元素的引用
-  const maxRows = 8;
-  const minRows = 3;
+  const maxRows = 8;// 最大行数
+  const minRows = 3;// 最小行数
+  const { isActive } = props;// 控制文本域显示/隐藏的开关
 
   // 计算每行文本的视觉行数
   function calculateVisualRows(line) {
@@ -29,7 +36,7 @@ const PoemInput = (props) => {
     measureSpan.textContent = line;
     document.body.appendChild(measureSpan);
 
-        // 文本实际宽度
+    // 文本实际宽度
     const textWidth = measureSpan.offsetWidth;
 
     // 文本域可用宽度 = 总宽度 - 左右内边距
@@ -47,7 +54,7 @@ const PoemInput = (props) => {
 
   const TextareaChange = (event) => {
     const value = event.target.value;
-    setPoem(value);
+    dispatch(setPoem({ value }));
 
     // 按换行符分割的行数
     const lineBreakRows = value.split("\n").length;
@@ -70,7 +77,7 @@ const PoemInput = (props) => {
     }
   }
 
-  const { isActive } = props;
+
 
   return (
     <div className="tab-pane fade show active" id="poem" role="tabpanel">

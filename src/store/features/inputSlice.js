@@ -5,23 +5,25 @@ export const inputSlice = createSlice({
   // 初始值
   initialState: {
     poem: '',
-    style:'水墨风格',
-    ratio:'1:1',
+    style: '水墨',
+    ratio: '1:1',
   },
   // 这里的属性会自动的导出为actions，在组件中可以直接通过dispatch进行触发
   reducers: {
-    setPoem (state, { payload }) {
-      state.poem = payload;
+    setPoem(state, { payload }) {
+      state.poem = payload.value;
     },
-    setStyle (state, { payload }) {
-      state.style = payload;
+    setStyle(state, { payload }) {
+      state.style = payload.value;
     },
-    setRatio (state, { payload }) {
-      state.ratio = payload;
-  },
+    setRatio(state, { payload }) {
+      state.ratio = payload.value;
+
+    },
+  }
 });
 
 // 导出actions
-export const { increment, decrement } = inputSlice.actions;
+export const { setPoem, setStyle, setRatio } = inputSlice.actions;
 
 export default inputSlice.reducer; // 导出reducer，在创建store时使用到
