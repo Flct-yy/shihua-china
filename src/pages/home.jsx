@@ -1,10 +1,8 @@
 import React from "react";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import PoemInput from "../components/core/PoemInput";
-import StyleSelector from "../components/core/StyleSelector";
-import ImageRatio from "../components/core/ImageRatio";
 import AllSelect from "../components/core/AllSelect";
+import ImageDisplay from "../components/core/ImageDisplay";
 const Home = () => {
 
   return (
@@ -16,6 +14,7 @@ const Home = () => {
 
         <AllSelect />
 
+        <ImageDisplay />
       </main>
 
       <Footer />
