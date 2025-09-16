@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaDownload, FaShareAlt } from "react-icons/fa";
+import { FaDownload, FaShareAlt, FaCheck, FaCircleNotch } from "react-icons/fa";
 import '@/scss/ImageDisplay.scss';
+import { saveImageToLocal } from '@/services/apiService';
 
 /**
  * 图片数据格式：
@@ -20,6 +21,8 @@ const ImageDisplay = ({ images = [] }) => {
   const [columns, setColumns] = useState([]);
   const [columnCount, setColumnCount] = useState(1);
   const containerRef = useRef(null);
+  const [downloadingImageId, setDownloadingImageId] = useState(null);
+  const [downloadedImageId, setDownloadedImageId] = useState(null);
 
   // 初始化列数和监听窗口大小变化
   useEffect(() => {
@@ -31,12 +34,57 @@ const ImageDisplay = ({ images = [] }) => {
     };
   }, []);
 
-  // 模拟图片数据，在实际应用中可以从props或API获取
+  // 从localStorage加载保存的图片
+  const loadImagesFromLocalStorage = () => {
+    try {
+      const savedImages = localStorage.getItem('poemImages');
+      if (savedImages) {
+        const parsedImages = JSON.parse(savedImages);
+        // 确保createdAt是Date对象
+        return parsedImages.map(img => ({
+          ...img,
+          createdAt: new Date(img.createdAt)
+        }));
+      }
+    } catch (error) {
+      console.error('从localStorage加载图片失败:', error);
+    }
+    return null;
+  };
+
+  // 保存图片到localStorage
+  const saveImagesToLocalStorage = (imagesToSave) => {
+    try {
+      localStorage.setItem('poemImages', JSON.stringify(imagesToSave));
+      console.log('[localStorage] 图片已保存到本地存储');
+    } catch (error) {
+      console.error('保存图片到localStorage失败:', error);
+    }
+  };
+
+  // 初始化和更新图片数据
   useEffect(() => {
-    // 如果没有传入图片数据，使用模拟数据
-    if (images.length === 0) {
-      const mockImages = [
-        {
+    // 首先尝试从localStorage加载图片
+    const savedImages = loadImagesFromLocalStorage();
+    
+    // 如果有外部传入的图片数据（这通常是新生成的图片），则更新显示并保存到localStorage
+    if (images.length > 0) {
+      // 只有当传入的图片与当前显示的图片不同时才更新
+      if (JSON.stringify(images) !== JSON.stringify(displayImages)) {
+        setDisplayImages(images);
+        saveImagesToLocalStorage(images);
+      }
+    } 
+    // 如果没有外部传入的图片，但localStorage有保存的图片，则使用保存的图片
+    else if (savedImages && savedImages.length > 0) {
+      // 确保只在displayImages为空或不同时才更新，避免不必要的渲染
+      if (displayImages.length === 0 || JSON.stringify(savedImages) !== JSON.stringify(displayImages)) {
+        setDisplayImages(savedImages);
+      }
+    } 
+    // 如果都没有，则使用模拟数据
+    else {
+      const mockImages = [{
           id: '1',
           url: 'https://placebear.com/800/600',
           title: '山水意境',
@@ -110,10 +158,8 @@ const ImageDisplay = ({ images = [] }) => {
         }
       ];
       setDisplayImages(mockImages);
-    } else {
-      setDisplayImages(images);
     }
-  }, [images]);
+  }, [images, displayImages]);
 
   // 更新列数
   const updateColumnCount = () => {
@@ -132,15 +178,53 @@ const ImageDisplay = ({ images = [] }) => {
   };
 
   // 处理图片下载
-  const handleDownload = (url, e) => {
+  const handleDownload = async (image, e) => {
     e.stopPropagation();
-    // 在实际应用中，这里可以实现图片下载功能
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `poem-image-${Date.now()}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    
+    // 检查是否已在下载中
+    if (downloadingImageId === image.id) {
+      return;
+    }
+    
+    // 设置下载中状态
+    setDownloadingImageId(image.id);
+    setDownloadedImageId(null);
+    
+    try {
+      // 生成文件名，包含图片信息以便识别
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+      let baseFilename = '诗画作品';
+      
+      // 如果有标题，使用标题作为基础文件名
+      if (image.title && image.title !== '诗画作品') {
+        baseFilename = image.title;
+      }
+      // 否则如果有诗句，取前几个字作为基础文件名
+      else if (image.poem && image.poem.length > 4) {
+        baseFilename = image.poem.slice(0, 4);
+      }
+      
+      // 拼接完整文件名
+      const filename = `${baseFilename}_${image.style}_${timestamp}`;
+      
+      // 调用API服务保存图片到本地
+      await saveImageToLocal(image.url, filename);
+      
+      // 设置下载成功状态
+      setDownloadedImageId(image.id);
+      
+      // 2秒后清除下载成功状态
+      setTimeout(() => {
+        setDownloadedImageId(null);
+      }, 2000);
+      
+    } catch (error) {
+      console.error('下载图片失败:', error);
+      alert(`下载图片失败: ${error.message || '未知错误'}`);
+    } finally {
+      // 清除下载中状态
+      setDownloadingImageId(null);
+    }
   };
 
   // 处理图片分享
@@ -246,10 +330,17 @@ const ImageDisplay = ({ images = [] }) => {
                   <div className="image-actions">
                     <button
                       className="action-btn"
-                      onClick={(e) => handleDownload(image.url, e)}
+                      onClick={(e) => handleDownload(image, e)}
                       title="下载"
+                      disabled={downloadingImageId === image.id}
                     >
-                      <FaDownload className="text-blue-500" />
+                      {downloadingImageId === image.id ? (
+                        <FaCircleNotch className="text-blue-500 animate-spin" />
+                      ) : downloadedImageId === image.id ? (
+                        <FaCheck className="text-green-500" />
+                      ) : (
+                        <FaDownload className="text-blue-500" />
+                      )}
                     </button>
                     <button
                       className="action-btn"

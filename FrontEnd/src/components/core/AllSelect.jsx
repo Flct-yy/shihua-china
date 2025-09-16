@@ -5,7 +5,7 @@ import ImageRatio from "./ImageRatio";
 import GenerateButton from "./GenerateButton";
 import "@/scss/AllSelect.scss";
 
-const AllSelect = () => {
+const AllSelect = ({ onImageGenerated }) => {
   const [activeTab, setActiveTab] = React.useState("poem");
 
   // 用ref获取各模块
@@ -57,7 +57,7 @@ const AllSelect = () => {
               </button>
             </li>
           </ul>
-          <GenerateButton />
+          <GenerateButton onImageGenerated={onImageGenerated} />
         </div>
 
         {/* 输入框区域 */}
