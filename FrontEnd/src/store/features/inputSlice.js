@@ -6,7 +6,7 @@ export const inputSlice = createSlice({
   initialState: {
     poem: '',
     style: '水墨',
-    ratio: '1:1',
+    ratio: '4:3',
   },
   // 这里的属性会自动的导出为actions，在组件中可以直接通过dispatch进行触发
   reducers: {

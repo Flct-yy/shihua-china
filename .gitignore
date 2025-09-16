@@ -7,12 +7,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# 依赖与构建产物
 node_modules
 dist
 dist-ssr
 *.local
 
-# Editor directories and files
+# 编辑器相关文件
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,3 +23,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 环境所有 .env 相关文件
+.env
+.env.*
+!.env.example

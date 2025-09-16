@@ -17,15 +17,15 @@ const ImageRatio = (props) => {
         <div className="ratio-option">
           {/* <div className="ratio-preview" style="aspect-ratio: 1/1;"></div> */}
           <div className={'text text-center ' + (
-            ratio === '1:1' ? "ratio-option-active" : ""
-          )} onClick={() => handleClick('1:1')}>1:1 方形</div>
+            ratio === '4:3' ? "ratio-option-active" : ""
+          )} onClick={() => handleClick('4:3')}>4:3 标准</div>
         </div>
       </div>
       <div className="col-sm-6 col-md-3">
         <div className="ratio-option">
           <div className={'text text-center ' + (
-            ratio === '4:3' ? "ratio-option-active" : ""
-          )} onClick={() => handleClick('4:3')}>4:3 标准</div>
+            ratio === '1:1' ? "ratio-option-active" : ""
+          )} onClick={() => handleClick('1:1')}>1:1 方形</div>
         </div>
       </div>
       <div className="col-sm-6 col-md-3">

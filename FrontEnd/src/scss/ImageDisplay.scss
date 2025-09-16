@@ -1,4 +1,4 @@
-.image-gallery {
+.image-display {
   padding: 20px 0;
   position: relative;
   width: 100%;
@@ -6,37 +6,21 @@
 
 /* 瀑布流容器 */
 .masonry-container {
-  column-count: 1;
-  column-gap: 20px;
+  display: flex;
   width: 100%;
+  gap: 20px;
 }
 
-/* 响应式瀑布流 - 平板设备（768px以上）显示2列 */
-@media (min-width: 768px) {
-  .masonry-container {
-    column-count: 2;
-  }
-}
-
-/* 响应式瀑布流 - 桌面设备（992px以上）显示3列 */
-@media (min-width: 992px) {
-  .masonry-container {
-    column-count: 3;
-  }
-}
-
-/* 响应式瀑布流 - 大屏幕设备（1200px以上）显示3列 */
-@media (min-width: 1200px) {
-  .masonry-container {
-    column-count: 3;
-  }
+/* 瀑布流列容器 */
+.masonry-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 20px;
 }
 
 /* 瀑布流中的图片项 */
 .masonry-item {
-  break-inside: avoid;
-  margin-bottom: 20px;
-  display: inline-block;
   width: 100%;
 }
 
@@ -56,11 +40,14 @@
 .image-container {
   position: relative;
   width: 100%;
-  padding-bottom: 75%; /* 默认4:3比例 */
+  /* 默认4:3比例 */
+  // 撑开图片高度
+  padding-bottom: 75%;
   overflow: hidden;
 }
 
 .image-container img {
+  // 元素全屏覆盖父容器且内容自适应填充
   position: absolute;
   top: 0;
   left: 0;
@@ -71,7 +58,25 @@
 }
 
 .image-card:hover .image-container img {
+  // 放大图片
   transform: scale(1.05);
+}
+
+/* 根据图片比例调整容器 */
+.image-container[data-ratio="16:9"] {
+  padding-bottom: 56.25%;
+}
+
+.image-container[data-ratio="3:2"] {
+  padding-bottom: 66.67%;
+}
+
+.image-container[data-ratio="4:3"] {
+  padding-bottom: 75%;
+}
+
+.image-container[data-ratio="1:1"] {
+  padding-bottom: 100%;
 }
 
 /* 图片信息悬停层 */
@@ -87,6 +92,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 20px;
+  // 隐藏信息层
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -172,21 +178,4 @@
 .empty-icon {
   font-size: 4rem;
   margin-bottom: 20px;
-}
-
-/* 根据图片比例调整容器 */
-.image-container[data-ratio="16:9"] {
-  padding-bottom: 56.25%;
-}
-
-.image-container[data-ratio="3:2"] {
-  padding-bottom: 66.67%;
-}
-
-.image-container[data-ratio="4:3"] {
-  padding-bottom: 75%;
-}
-
-.image-container[data-ratio="1:1"] {
-  padding-bottom: 100%;
 }
