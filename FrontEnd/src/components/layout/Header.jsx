@@ -1,4 +1,5 @@
 import React from "react";
+import '@/scss/layout/Header.scss';
 
 const Header = () => {
 

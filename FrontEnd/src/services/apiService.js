@@ -251,7 +251,56 @@ export const saveImageToLocal = async (imageUrl, filename = 'generated-image.jpg
   }
 };
 
+/**
+ * 分享图片功能
+ * @param {string} imageUrl - 图片URL
+ * @param {string} title - 分享标题
+ * @param {string} text - 分享描述文本
+ * @returns {Promise} 返回分享结果
+ */
+export const shareImage = async (imageUrl, title = '诗画中国作品', text = '我在诗画中国生成了一幅作品，快来看看吧！') => {
+  try {
+    // 检查浏览器是否支持Web Share API
+    if (navigator.share) {
+      // 使用Web Share API进行分享
+      await navigator.share({
+        title: title,
+        text: text,
+        url: imageUrl
+      });
+      console.log('[分享功能] Web Share API分享成功');
+      return {
+        success: true,
+        method: 'web-share'
+      };
+    } else {
+      // 降级方案：复制图片链接到剪贴板
+      await navigator.clipboard.writeText(imageUrl);
+      console.log('[分享功能] 图片链接已复制到剪贴板');
+      return {
+        success: true,
+        method: 'clipboard'
+      };
+    }
+  } catch (error) {
+    console.error('[分享功能] 分享失败:', error);
+    // 创建一个更友好的错误消息
+    let userFriendlyError = '分享失败，请重试';
+    
+    // 根据不同的错误类型提供更具体的消息
+    if (error.name === 'NotAllowedError') {
+      userFriendlyError = '请授权访问剪贴板后重试';
+    } else if (error.name === 'AbortError') {
+      userFriendlyError = '分享已取消';
+    }
+    
+    // 抛出带有友好消息的新错误
+    throw new Error(userFriendlyError);
+  }
+};
+
 export default {
   generateImage,
-  saveImageToLocal
+  saveImageToLocal,
+  shareImage
 };

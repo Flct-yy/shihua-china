@@ -1,37 +1,32 @@
-.ratio-option {
+/* 图片比例选择器样式 */
+.ratio-selector-container {
+  transition: height 0.4s ease;
+}
 
+.ratio-option {
   .text {
     padding: 0.375rem 0.75rem;
     border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    user-select: none;
     color: #1890ff;
-
-    &:hover {
-      font-weight: 600;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
-
   .ratio-option-active {
-
     font-weight: 600;
-
+  }
+  .ratio-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .ratio-icon {
+    flex-shrink: 0;
   }
 }
 
-
-.image-ratio {
-  transition: "height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-
-}
-
-.active {
-  display: block;
-  height: auto;
-}
-
-.not-active {
-  display: none;
-  height: 0rem;
-}
+.active { display: block; }
+.not-active { display: none; }

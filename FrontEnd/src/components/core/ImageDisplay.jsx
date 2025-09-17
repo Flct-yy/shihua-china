@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaDownload, FaShareAlt, FaCheck, FaCircleNotch } from "react-icons/fa";
+import { FaDownload, FaShareAlt, FaCheck, FaCircleNotch, FaCopy } from "react-icons/fa";
 import '@/scss/ImageDisplay.scss';
-import { saveImageToLocal } from '@/services/apiService';
+import { saveImageToLocal, shareImage } from '@/services/apiService';
 
 /**
  * 图片数据格式：
@@ -23,6 +23,8 @@ const ImageDisplay = ({ images = [] }) => {
   const containerRef = useRef(null);
   const [downloadingImageId, setDownloadingImageId] = useState(null);
   const [downloadedImageId, setDownloadedImageId] = useState(null);
+  const [sharingImageId, setSharingImageId] = useState(null);
+  const [sharedImageId, setSharedImageId] = useState(null);
 
   // 初始化列数和监听窗口大小变化
   useEffect(() => {
@@ -89,7 +91,7 @@ const ImageDisplay = ({ images = [] }) => {
           url: 'https://placebear.com/800/600',
           title: '山水意境',
           poem: '白日依山尽，黄河入海流。',
-          style: '中国传统水墨',
+          style: '水墨风格',
           ratio: '4:3',
           createdAt: new Date(Date.now() - 3600000)
         },
@@ -98,7 +100,7 @@ const ImageDisplay = ({ images = [] }) => {
           url: 'https://placebear.com/1600/900',
           title: '春日桃花',
           poem: '人面不知何处去，桃花依旧笑春风。',
-          style: '工笔画',
+          style: '工笔风格',
           ratio: '16:9',
           createdAt: new Date(Date.now() - 7200000)
         },
@@ -107,7 +109,7 @@ const ImageDisplay = ({ images = [] }) => {
           url: 'https://placebear.com/900/600',
           title: '寒江独钓',
           poem: '孤舟蓑笠翁，独钓寒江雪。',
-          style: '水墨画',
+          style: '写意风格',
           ratio: '3:2',
           createdAt: new Date(Date.now() - 10800000)
         },
@@ -125,7 +127,7 @@ const ImageDisplay = ({ images = [] }) => {
           url: 'https://placebear.com/1600/900',
           title: '月落乌啼',
           poem: '月落乌啼霜满天，江枫渔火对愁眠。',
-          style: '淡彩',
+          style: '淡彩风格',
           ratio: '16:9',
           createdAt: new Date(Date.now() - 18000000)
         },
@@ -134,32 +136,32 @@ const ImageDisplay = ({ images = [] }) => {
           url: 'https://placebear.com/800/600',
           title: '秋山红叶',
           poem: '停车坐爱枫林晚，霜叶红于二月花。',
-          style: '重彩',
+          style: '重彩风格',
           ratio: '3:2',
           createdAt: new Date(Date.now() - 21600000)
         },
         {
           id: '7',
           url: 'https://placebear.com/800/600',
-          title: '秋山红叶',
-          poem: '停车坐爱枫林晚，霜叶红于二月花。',
-          style: '重彩',
+          title: '山居秋暝',
+          poem: '明月松间照，清泉石上流。',
+          style: '水墨风格',
           ratio: '1:1',
-          createdAt: new Date(Date.now() - 21600000)
+          createdAt: new Date(Date.now() - 25200000)
         },
         {
           id: '8',
           url: 'https://placebear.com/800/600',
-          title: '秋山红叶',
-          poem: '停车坐爱枫林晚，霜叶红于二月花。',
-          style: '重彩',
+          title: '江雪',
+          poem: '千山鸟飞绝，万径人踪灭。',
+          style: '工笔风格',
           ratio: '3:2',
-          createdAt: new Date(Date.now() - 21600000)
+          createdAt: new Date(Date.now() - 28800000)
         }
       ];
       setDisplayImages(mockImages);
     }
-  }, [images, displayImages]);
+  }, [images]);
 
   // 更新列数
   const updateColumnCount = () => {
@@ -228,11 +230,46 @@ const ImageDisplay = ({ images = [] }) => {
   };
 
   // 处理图片分享
-  const handleShare = (id, e) => {
+  const handleShare = async (image, e) => {
     e.stopPropagation();
-    // 在实际应用中，这里可以实现图片分享功能
-    console.log(`Share image ${id}`);
-    alert('分享功能暂未实现');
+    
+    // 检查是否已在分享中
+    if (sharingImageId === image.id) {
+      return;
+    }
+    
+    // 设置分享中状态
+    setSharingImageId(image.id);
+    setSharedImageId(null);
+    
+    try {
+      // 准备分享内容
+      const shareTitle = image.title || '诗画中国作品';
+      const shareText = image.poem || '我在诗画中国生成了一幅作品，快来看看吧！';
+      
+      // 调用分享API
+      const result = await shareImage(image.url, shareTitle, shareText);
+      
+      // 设置分享成功状态
+      setSharedImageId(image.id);
+      
+      // 如果是通过剪贴板分享，给用户一个额外的提示
+      if (result.method === 'clipboard') {
+        alert('图片链接已复制到剪贴板');
+      }
+      
+      // 2秒后清除分享成功状态
+      setTimeout(() => {
+        setSharedImageId(null);
+      }, 2000);
+      
+    } catch (error) {
+      console.error('分享图片失败:', error);
+      alert(error.message || '分享失败，请重试');
+    } finally {
+      // 清除分享中状态
+      setSharingImageId(null);
+    }
   };
 
   // 格式化日期
@@ -344,10 +381,19 @@ const ImageDisplay = ({ images = [] }) => {
                     </button>
                     <button
                       className="action-btn"
-                      onClick={(e) => handleShare(image.id, e)}
+                      onClick={(e) => handleShare(image, e)}
                       title="分享"
+                      disabled={sharingImageId === image.id}
                     >
-                      <FaShareAlt className="text-green-500" />
+                      {sharingImageId === image.id ? (
+                        <FaCircleNotch className="text-green-500 animate-spin" />
+                      ) : sharedImageId === image.id ? (
+                        <FaCheck className="text-green-500" />
+                      ) : navigator.share ? (
+                        <FaShareAlt className="text-green-500" />
+                      ) : (
+                        <FaCopy className="text-green-500" />
+                      )}
                     </button>
                   </div>
                 </div>

@@ -1,3 +1,6 @@
-.home {
+// 导入主样式文件，确保可以使用$primary等变量
+@use '../style.scss' as *;
 
+.home {
+  // 保留原有的基础样式
 }
